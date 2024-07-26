@@ -1,0 +1,47 @@
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #333;
+    color: white;
+}
+
+.titulo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.lista {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.link {
+    color: white;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.input {
+    margin-left: 2rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.botao {
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #555;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.botao:hover {
+    background-color: #777;
+}
