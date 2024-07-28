@@ -107,6 +107,7 @@ return(
             <h3>{listaJogos.titulo}</h3>
             <h3>R${listaJogos.preco}</h3>
             <p>{listaJogos.descricao}</p>
+            <Link href={"/Jogos/" + listaJogos.id} >Ver Mais</Link>
         </div>
         ))}
     </main>

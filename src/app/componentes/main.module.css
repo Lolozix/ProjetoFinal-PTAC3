@@ -1,6 +1,4 @@
-/* main.module.css */
 
-/* Container for filtering options */
 .filtro {
     display: flex;
     flex-direction: column;
@@ -37,7 +35,7 @@
     background-color: #005bb5;
   }
   
-  /* Main container for product cards */
+
   .main {
     display: flex;
     flex-wrap: wrap;
@@ -45,8 +43,7 @@
     justify-content: center;
     padding: 20px;
   }
-  
-  /* Individual product card styling */
+
   .card {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -79,7 +76,7 @@
     margin: 10px;
   }
   
-  /* Image styling within cards */
+
   .card img {
     width: 100%;
     height: auto;
