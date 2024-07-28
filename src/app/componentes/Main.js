@@ -3,117 +3,113 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./main.module.css";
 import { useEffect, useState } from "react";
-import Spinner from "./Spinner";
+import Loading from "./Spinner";
 import ErrorFetch from "./ErrorFetch";
 
 export default function Main() {
-    const [produtos, setProdutos] = useState([]);
-    const [listaCompleta, setListaCompleta] = useState([]);
-    const [textoBusca, setTextoBusca] = useState("");
-    const [erro, setErro] = useState(false);
-    const [carregando, setCarregando] = useState(true);
+const [produto, setlistaProdutos] = useState([]);
+const [listComplete, setListComplet] = useState([]);
+const [textSearch, setTextSearch] = useState("");
+const [isError, setIsError] = useState(false);
 
-    useEffect(() => {
-        const buscarProdutos = async () => {
-            try {
-                const response = await fetch("http://localhost:3000/api");
-                const data = await response.json();
-                setProdutos(data);
-                setListaCompleta(data);
-            } catch {
-                setErro(true);
-            } finally {
-                setCarregando(false);
-            }
-        };
-        buscarProdutos();
-    }, []);
-
-    const ordenarAscendente = () => {
-        const listaOrdenada = [...produtos].sort((a, b) => 
-            a.title.localeCompare(b.title)
-        );
-        setProdutos(listaOrdenada);
-    };
-
-    const ordenarDescendente = () => {
-        const listaOrdenada = [...produtos].sort((a, b) => 
-            b.title.localeCompare(a.title)
-        );
-        setProdutos(listaOrdenada);
-    };
-
-    const ordenarPrecoMenor = () => {
-        const listaOrdenada = [...produtos].sort((a, b) => a.price - b.price);
-        setProdutos(listaOrdenada);
-    };
-
-    const ordenarPrecoMaior = () => {
-        const listaOrdenada = [...produtos].sort((a, b) => b.price - a.price);
-        setProdutos(listaOrdenada);
-    };
-
-    const buscar = (texto) => {
-        setTextoBusca(texto);
-        
-        if (texto.trim() === "") {
-            setProdutos(listaCompleta);
-            return;
-        }
-        
-        const novaLista = listaCompleta.filter((produto) =>
-            produto.title.toUpperCase().includes(texto.toUpperCase())
-        );
-        setProdutos(novaLista);
-    };
-
-    if (erro) {
-        return <ErrorFetch />;
+useEffect(() => {
+    const getproduto = async () => {
+    try {
+        const response = await fetch("http://localhost:3000/api");
+        const data = await response.json();
+        setlistaProdutos(data);
+        setListComplet(data);
+        console.log(data)
+    } catch {
+        setIsError(true);
     }
+    };
+    getproduto();
+}, []);
 
-    if (carregando) {
-        return <Spinner />;
-    }
-
-    return (
-        <>
-            <div className={styles.filtro}>
-                <div>
-                    <input
-                        type="text"
-                        value={textoBusca}
-                        placeholder="Pesquise"
-                        onChange={(event) => buscar(event.target.value)}
-                    />
-
-                    <button onClick={ordenarAscendente} className={styles.botao}>
-                        A - Z
-                    </button>
-
-                    <button onClick={ordenarDescendente} className={styles.botao}>
-                        Z - A
-                    </button>
-
-                    <button onClick={ordenarPrecoMaior} className={styles.botao}>
-                        Preço Maior
-                    </button>
-
-                    <button onClick={ordenarPrecoMenor} className={styles.botao}>
-                        Preço Menor
-                    </button>
-                </div>
-            </div>
-
-            <main className={styles.main}>
-                {produtos.map((produto) => (
-                    <div className={styles.card} key={produto.id}>
-                        <h1>{produto.title}</h1>
-                        <Image width={300} height={300} src={produto.image} alt={produto.title} />
-                        <h3>{produto.price}</h3>
-                        <p>{produto.description}</p>
-                    </div>
-                ))}
-            </main>
-        </>
+const Az = () => {
+    const listAux = [...produto].sort((a, b) => 
+        a.titulo.localeCompare(b.titulo)
     );
+
+    setlistaProdutos(listAux);
+};
+
+const Za = () => {
+    const listAux = [...produto].reverse((a, b) => 
+        b.titulo.localeCompare(a.titulo)
+    );
+
+    setlistaProdutos(listAux);
+};
+
+const orderPrecoMenor = () => {
+    const listaPreco = [...produto].sort((a, b) => a.preco - b.preco);
+
+    setlistaProdutos(listaPreco);
+};
+
+const orderPrecoMaior = () => {
+    const listaPreco = [...produto].reverse((a, b) => b.preco - a.preco);
+
+    setlistaProdutos(listaPreco);
+};
+
+const search = (text) => {
+    setTextSearch(text); 
+
+    if (text.trim() == ""){
+        setlistaProdutos(listComplete);
+        return;
+    }
+    const newList = produto.filter((produ) =>
+    produ.titulo.toUpperCase().trim().includes(textSearch.toUpperCase().trim())
+    );
+    setlistaProdutos(newList);
+};
+if (isError == true) {
+    return <ErrorFetch/>;
+}
+
+if (listComplete[0] == null) {
+    return <Loading />;
+}
+
+return(
+    <>
+        <div className={styles.filtro}>
+        <div>
+        <input
+            type="text"
+            value={textSearch}
+            placeholder="Pesquise"
+            onChange={(event) => search(event.target.value)}/>
+
+        <button onClick={Az} className={styles.botao}> A - Z</button>
+
+        <button onClick={Za} className={styles.botao}>Z - A</button>
+
+        <button onClick={orderPrecoMaior} className={styles.botao}>
+            {" "}
+            Preço Maior
+        </button>
+        <button onClick={orderPrecoMenor} className={styles.botao}>
+            {" "}
+            Preço Menor
+        </button>
+        </div>
+    </div>
+
+    <main className={styles.main}>
+        {produto.map((listaJogos) => (
+        <div className={styles.card} key={listaJogos.id}>
+            <Image width={300} height={300} src={listaJogos.imagem} />
+            <h3>{listaJogos.titulo}</h3>
+            <h3>R${listaJogos.preco}</h3>
+            <p>{listaJogos.descricao}</p>
+        </div>
+        ))}
+    </main>
+    </>
+)
 }
